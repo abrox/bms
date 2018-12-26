@@ -1,8 +1,9 @@
 # Battery Management System
 ...Work in progress....
 
-This project implements SOC based battery monitor.
-And it's part of my [Vessel Monitor](https://github.com/abrox/vessel-monitor)
+This project implements Battery Monitor that use Coulombs counting to detect state of Charge (SOC).
+ 
+It's part of my [Vessel Monitor](https://github.com/abrox/vessel-monitor)
 
 
 
