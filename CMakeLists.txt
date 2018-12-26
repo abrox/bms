@@ -1,8 +1,10 @@
 
 cmake_minimum_required (VERSION 2.8.11)
 project (bms)
+
 set (CMAKE_CXX_STANDARD 11)
 add_subdirectory (tests)
+add_subdirectory (lib)
 
 include_directories ("${PROJECT_SOURCE_DIR}/lib")
 # add a target to generate API documentation with Doxygen
