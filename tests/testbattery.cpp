@@ -3,7 +3,7 @@
 #include "UnitTest++/UnitTest++.h"
 
 #define private public
-#include "../battery.h"
+#include "battery.h"
 
 using namespace bms;
 

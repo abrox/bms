@@ -1,7 +1,7 @@
 #ifndef RUNNABLE
 #define RUNNABLE
 
-#include "../eventqueue/eventqueue.h"
+#include "eventqueue.h"
 
 
 template <class T,class T2>
