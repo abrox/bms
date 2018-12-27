@@ -70,6 +70,5 @@ extern eQueue_t eQueue;
 
 #define BUTTON_PIN 12
 
-#define NET_CONFIG_FILE PSTR("/config.json")
 
 #endif

@@ -137,7 +137,7 @@ void Display::handleMenuDisplay(const event_t &msg)
    }
    else
    if( msg == BUTTON_DOWN_TWO_SEC ){
-       SPIFFS.remove(NET_CONFIG_FILE);
+       //SPIFFS.remove(NET_CONFIG_FILE);
        str = PSTR("Config deleted");
        show = true;
    }
