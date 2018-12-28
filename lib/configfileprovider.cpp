@@ -14,6 +14,42 @@
 
 #define NET_CONFIG_FILE PSTR("/config.json")
 
+
+///Utility function to calculate CRC.
+///
+uint32_t calculateCRC32(const uint8_t *data, size_t length) {
+  uint32_t crc = 0xffffffff;
+  while (length--) {
+    uint8_t c = *data++;
+    for (uint32_t i = 0x80; i > 0; i >>= 1) {
+      bool bit = crc & 0x80000000;
+      if (c & i) {
+        bit = !bit;
+      }
+      crc <<= 1;
+      if (bit) {
+        crc ^= 0x04c11db7;
+      }
+    }
+  }
+  return crc;
+}
+
+void printDateTime(const DateTime& dt)
+{
+    DPRINT(dt.year(), DEC);
+    DPRINT('/');
+    DPRINT(dt.month(), DEC);
+    DPRINT('/');
+    DPRINT(dt.day(), DEC);
+    DPRINT(' ');
+    DPRINT(dt.hour(), DEC);
+    DPRINT(':');
+    DPRINT(dt.minute(), DEC);
+    DPRINT(':');
+    DPRINTLN(dt.second(), DEC);
+}
+
 #if 0
 bool MqttClient::readConfigFromSerial()
 {
@@ -119,5 +155,43 @@ bool ConfigFileProvider::getMqttCfg(MqttCfg& cfg)
   return true;
 }
 
+bool ConfigFileProvider::getRTCMemStatus()
+{
+    bool rc = false;
 
+    // Read struct from RTC memory
+    if( ESP.rtcUserMemoryRead(0, (uint32_t*)&_rtcData, sizeof(rtcData_t)) ) {
+        uint32_t crcOfData = calculateCRC32((uint8_t*) &_rtcData.timestamp, sizeof(_rtcData.timestamp));
+        DPRINT("CRC32 of data: ");
+        DPRINTLN(crcOfData, HEX);
+        DPRINT("CRC32 read from RTC: ");
+        DPRINTLN(_rtcData.crc32, HEX);
 
+        if( crcOfData != _rtcData.crc32 ) {
+          DPRINTLN("CRC32 in RTC memory doesn't match CRC32 of data. Data is probably invalid!");
+        } else {
+          DPRINTLN("CRC32 check ok, data is probably valid.");
+          DPRINT("Date time: ");
+          printDateTime(DateTime(_rtcData.timestamp));
+          rc = true;
+        }
+    }
+    return rc;
+}
+bool ConfigFileProvider::setRTCMemStatus()
+{
+    bool rc =false;
+    DateTime now = rtc.now();
+    _rtcData.timestamp = now.unixtime();
+    _rtcData.crc32 = calculateCRC32((uint8_t*) &_rtcData.timestamp, sizeof(_rtcData.timestamp));
+
+    if( ESP.rtcUserMemoryWrite(0, (uint32_t*) &_rtcData, sizeof(rtcData_t)) ) {
+        DPRINT("CRC32: ");
+        DPRINTLN(_rtcData.crc32, HEX);
+        DPRINT("Date time: ");
+        printDateTime(now);
+        rc = true;
+      }
+
+    return rc;
+}

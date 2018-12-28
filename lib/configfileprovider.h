@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "commondefs.h"
+#include "RTClib.h"
 
 typedef struct {
         const char* _ssid{NULL};
@@ -25,11 +26,18 @@ class ConfigFileProvider
     private:
         ConfigFileProvider() {;}
 
+        typedef struct {
+          uint32_t crc32;
+          uint32_t timestamp;
+        } rtcData_t;
 
+        rtcData_t _rtcData;
         const size_t _confBuffSize = 3*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 130;
         DynamicJsonBuffer _jsonBuffer{_confBuffSize};
 
     public:
+        bool getRTCMemStatus();
+        bool setRTCMemStatus();
         bool getMqttCfg(MqttCfg& cfg);
         ConfigFileProvider(ConfigFileProvider const&)  = delete;
         void operator=(ConfigFileProvider const&)  = delete;

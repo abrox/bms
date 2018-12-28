@@ -2,7 +2,7 @@
 #define COMMONDEFS_H
 
 #include <runnable.h>
-
+#include "RTClib.h"
 
 #define DEBUG  
 #ifdef DEBUG  
@@ -55,6 +55,7 @@ typedef Runnable<event_t,AppCtx> runnable_t;
 #define ONE_WIRE_BUS 0
 
 extern eQueue_t eQueue;
+extern DS1307 rtc;
 
 //SDA 4
 //Scl 5
