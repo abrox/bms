@@ -45,6 +45,6 @@ bool TempSensor::setUp()
 }
 void TempSensor::init()
 {
-  _eq.putQ(MEASSURE_TIMEOUT);
+  //_eq.putQ(MEASSURE_TIMEOUT);
 }
   

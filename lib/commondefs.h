@@ -14,7 +14,7 @@
 #endif
 
 typedef enum event_t{
-  MENU_TIMEOUT,
+  DISPLAY_OFF_TIMEOUT,
   UPDATE_STATUS_DISLAY,
   BUTTON_DOWN,
   BUTTON_DOWN_TWO_SEC,
@@ -27,24 +27,35 @@ typedef enum event_t{
   START_MQTT,
   MQTT_CLIENT_TIMEOUT,
   MQTT_RUNNING,
-  MQTT_FAILED
+  MQTT_FAILED,
+  SOC_UPDATE,
+  CURRENT_REQ
 }event_t;
+
+typedef enum bType_t{
+  UNDEFINED,
+  FIRST_BOOT,
+  COLD_BOOT,
+  WARM_BOOT
+}bType_t;
 
 typedef EventQueue<event_t> eQueue_t;
 
 class AppCtx{
-    public:
+
+public:
     AppCtx(eQueue_t &eq):_eq(eq){;}
-    
+
     void updateStatusDisplay( const char * statusMsg){
         _statusMsg = statusMsg;
          DPRINTLN(_statusMsg);
         _eq.putQ(UPDATE_STATUS_DISLAY);
-  }
-  
-  const char * _statusMsg{NULL};
-  private:
-  eQueue_t &_eq;
+    }
+
+    const char * _statusMsg{NULL};
+    bType_t  _bootType{UNDEFINED};
+private:
+    eQueue_t &_eq;
 };
 
 

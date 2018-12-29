@@ -15,6 +15,7 @@ class CurrentSensor: public runnable_t{
 
   void handleMsgIn(const event_t &msg);
   bool setUp();
+  void init();
 
   private:
   INA219 monitor;

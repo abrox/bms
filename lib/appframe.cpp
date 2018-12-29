@@ -7,50 +7,43 @@ TempSensor    t(eQueue,ONE_WIRE_BUS);
 CurrentSensor c(eQueue,INA219::I2C_ADDR_41);
 MqttClient    m(eQueue);
 Display       d(eQueue);
+SandMan       s(eQueue);
 
 
-AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&m,&d},_appCtx(eq)
+AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&m,&d,&s},_appCtx(eq)
 {
 
   ;
 }
-bool AppFrame::ReadRTCMem()
+
+bType_t AppFrame::AppFrame::getBootType()
 {
- 
- return false;
+  bType_t type;
+  ConfigFileProvider& c=ConfigFileProvider::getInstance();
+
+  if( c.getRTCMemStatus() ){
+      type = WARM_BOOT;
+  }else
+   if( c.configFilesExist() ){
+       c.setRTCMemStatus();
+       type = COLD_BOOT;
+  }else{
+       type = FIRST_BOOT;
+  }
+  
+  return type;
 }
 
-AppFrame::bType_t AppFrame::getBootTypeAndRTCMem()
-{
-  bType_t rc;
-  if( ReadRTCMem() ){
-    rc = WARM_BOOT;
-  }else
-   if(SPIFFS.exists("/config.json")){
-    rc = COLD_BOOT;
-  }else{
-    rc = FIRST_BOOT;
-  }
-  
-  return rc;
-}
-void AppFrame::readConfigFromSerial()
-{
-  
-}
 bool AppFrame::setUp()
 {
-  switch(getBootTypeAndRTCMem()){
-    case FIRST_BOOT:
-        readConfigFromSerial();
-    break;
-    
-  }
+    _appCtx._bootType = getBootType();
   
-  for(int i=0;i < _rs;i++)
-      _r[i]->setUp(&_appCtx);
-  return true;
+   for(int i=0;i < _rs;i++)
+       _r[i]->setUp(&_appCtx);
+
+   return true;
 }
+
 bool AppFrame::init()
 {
   for(int i=0;i < _rs;i++)
@@ -69,6 +62,6 @@ void AppFrame::run()
   }
   
   for(int i=0;i < _rs;i++){
-          _r[i]->executeAlways();
-      }
+      _r[i]->executeAlways();
+  }
 }

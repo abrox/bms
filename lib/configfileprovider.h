@@ -36,6 +36,7 @@ class ConfigFileProvider
         DynamicJsonBuffer _jsonBuffer{_confBuffSize};
 
     public:
+        bool configFilesExist();
         bool getRTCMemStatus();
         bool setRTCMemStatus();
         bool getMqttCfg(MqttCfg& cfg);

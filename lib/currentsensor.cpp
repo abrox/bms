@@ -8,7 +8,8 @@ CurrentSensor::CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr):Runnabl
 
 void CurrentSensor::handleMsgIn(const event_t &msg)
 {
-   if(msg == CURRENT_TIMEOUT){
+   if( msg == CURRENT_TIMEOUT ||
+       msg == CURRENT_REQ ){
       Serial.print("raw shunt voltage: ");
   Serial.println(monitor.shuntVoltageRaw());
   
@@ -35,7 +36,7 @@ void CurrentSensor::handleMsgIn(const event_t &msg)
 
   Serial.println(" ");
   Serial.println(" ");
-
+  _eq.putQ(SOC_UPDATE);
    }
   
 }
@@ -47,5 +48,7 @@ bool CurrentSensor::setUp()
     monitor.calibrate();
     return true;
 }
-
-  
+void CurrentSensor::init()
+{
+    _eq.putQ(CURRENT_REQ);
+}

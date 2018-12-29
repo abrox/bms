@@ -13,11 +13,12 @@ MqttClient::MqttClient(eQueue_t &eq):Runnable(eq),_state(IDLE),_reTryCount(0)
 void MqttClient::executeAlways()
 {
     _client.loop();
-    
+    delay(10);
     if ( _state == CONNECTED ){
     
          if( !_client.connected() ) {
              DPRINTLN(PSTR("Connection lost"));
+             _reTryCount = _maxRetry;
              _state = WAIT_WIFI;
          }
     }

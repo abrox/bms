@@ -11,7 +11,7 @@
 #include "buttons.h"
 #include "display.h"
 #include "mqttclient.h"
-
+#include "sandman.h"
 
 #include <runnable.h>
 
@@ -26,17 +26,9 @@ class AppFrame{
   bool init();
 
   private:
-  typedef enum bType_t{
-    FIRST_BOOT,
-    COLD_BOOT,
-    WARM_BOOT
-    
-  }bType_t;
   
-  bType_t getBootTypeAndRTCMem();
-  bool ReadRTCMem();
-  void readConfigFromSerial();
-  static const uint16_t _rs=5;
+  bType_t getBootType();
+  static const uint16_t _rs=6;
   eQueue_t &_eq;
   runnable_t *_r[_rs];
   AppCtx _appCtx;

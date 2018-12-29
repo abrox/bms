@@ -8,6 +8,7 @@ add_library(LibProject
             mqttclient.cpp  
             tempsensor.cpp
             configfileprovider.cpp
+            sandman.cpp
           )
 
 

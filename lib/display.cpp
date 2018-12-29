@@ -5,7 +5,7 @@
 
 
 void Display::timerCallBack(){
-     _eq.putQ(MENU_TIMEOUT);
+     _eq.putQ(DISPLAY_OFF_TIMEOUT);
 }
 
 Display::Display(eQueue_t &eq):Runnable(eq),_state(DISPLAY_OFF),u8g2(U8G2_R0,  OLED_CLK, OLED_MOSI, OLED_CS,OLED_DC, OLED_RESET)
@@ -22,7 +22,7 @@ void Display::handleMsgIn(const event_t &msg)
         u8g2.setPowerSave(false);
         _tick.detach();
     }else
-     if( msg == MENU_TIMEOUT ){
+     if( msg == DISPLAY_OFF_TIMEOUT ){
          u8g2.setPowerSave(true);
          _state = DISPLAY_OFF;
     }

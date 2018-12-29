@@ -195,3 +195,13 @@ bool ConfigFileProvider::setRTCMemStatus()
 
     return rc;
 }
+
+
+bool ConfigFileProvider::configFilesExist()
+{
+    bool rc= false;
+    if( SPIFFS.exists(NET_CONFIG_FILE))
+        rc=true;
+
+    return rc;
+}
