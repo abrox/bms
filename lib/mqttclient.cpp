@@ -94,9 +94,9 @@ void MqttClient::handleMsgIn(const event_t &msg)
     }
 }
 
-bool MqttClient::setUp()
+void MqttClient::setUp()
 {    
-  return true;
+  ;
 }
 
 void MqttClient::init()

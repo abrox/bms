@@ -24,12 +24,11 @@ void Buttons::handleMsgIn(const event_t &msg)
  ;  
 }
 
-bool Buttons::setUp()
+void Buttons::setUp()
 {
 
   //Setup menu button
   pinMode(_ioPin, INPUT_PULLUP);
-  return true;
 }
 
 void Buttons::executeAlways()

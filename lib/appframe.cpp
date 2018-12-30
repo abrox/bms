@@ -35,22 +35,18 @@ bType_t AppFrame::AppFrame::getBootType()
   return type;
 }
 
-bool AppFrame::setUp()
+void AppFrame::setUp()
 {
     _appCtx._bootType = getBootType();
   
    for(int i=0;i < _rs;i++)
        _r[i]->setUp(&_appCtx);
-
-   return true;
 }
 
-bool AppFrame::init()
+void AppFrame::init()
 {
   for(int i=0;i < _rs;i++)
       _r[i]->init();
-      
-  return true;
 }
 
 void AppFrame::run()

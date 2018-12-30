@@ -37,11 +37,10 @@ void TempSensor::handleMsgIn(const event_t &msg)
    
 }
 
-bool TempSensor::setUp()
+void TempSensor::setUp()
 {
   // Start up the library
   sensors.begin();
-  return true;
 }
 void TempSensor::init()
 {

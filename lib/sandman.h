@@ -14,7 +14,7 @@ class SandMan: public runnable_t{
 
   void handleMsgIn(const event_t &msg);
 
-  bool setUp();
+  void setUp();
   void executeAlways();
   private:
   const uint32_t NO_FLAGS     = 0;

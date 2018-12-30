@@ -13,7 +13,7 @@ class TempSensor: public runnable_t{
   TempSensor(eQueue_t &eq,const uint8_t bus);
 
   void handleMsgIn(const event_t &msg);
-  bool setUp();
+  void setUp();
   void init();
  
   private:

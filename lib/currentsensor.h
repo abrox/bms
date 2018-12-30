@@ -14,7 +14,7 @@ class CurrentSensor: public runnable_t{
   CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr);
 
   void handleMsgIn(const event_t &msg);
-  bool setUp();
+  void setUp();
   void init();
 
   private:

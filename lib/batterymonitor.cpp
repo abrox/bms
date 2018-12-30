@@ -16,10 +16,9 @@ void BatteryMonitor::handleMsgIn(const event_t &msg)
 
 }
 
-bool BatteryMonitor::setUp()
+void BatteryMonitor::setUp()
 {
-
-    return true;
+;
 }
 
 

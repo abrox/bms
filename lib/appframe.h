@@ -23,8 +23,8 @@ class AppFrame{
   AppFrame(eQueue_t &eq);
            
   void run();
-  bool setUp();
-  bool init();
+  void setUp();
+  void init();
 
   private:
   

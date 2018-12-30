@@ -13,7 +13,7 @@ class Display: public runnable_t{
   Display(eQueue_t &eq);
 
   void handleMsgIn(const event_t &msg);
-  bool setUp();
+  void setUp();
  
   private:
   enum state{

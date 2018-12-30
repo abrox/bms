@@ -12,7 +12,7 @@ class Buttons: public runnable_t{
 
   void handleMsgIn(const event_t &msg);
   void executeAlways();
-  bool setUp();
+  void setUp();
   void init();
  
   private:

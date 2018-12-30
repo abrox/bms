@@ -33,10 +33,9 @@ void SandMan::handleMsgIn(const event_t &msg)
 
 }
 
-bool SandMan::setUp()
+void SandMan::setUp()
 {
     setFlags(WAIT_CURRENT);
-    return true;
 }
 
 

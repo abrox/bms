@@ -10,10 +10,10 @@ class Runnable
 public:
     Runnable(EventQueue<T> &eq):_eq(eq) {}
     virtual void handleMsgIn(const T &msg)=0;
-    virtual bool setUp()=0;
+    virtual void setUp()=0;
     virtual void init(){;}
     virtual void executeAlways(){;}
-    virtual bool setUp( T2 *t){
+    virtual void setUp( T2 *t){
         _appCtx = t;
         return setUp();
     }

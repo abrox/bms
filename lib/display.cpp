@@ -54,10 +54,9 @@ void Display::handleMsgIn(const event_t &msg)
     show(msg);    
 }
 
-bool Display::setUp()
+void Display::setUp()
 {
   u8g2.begin();
-  return true;
 }
 
 void Display::handleBatteryDisplay(const event_t &msg)

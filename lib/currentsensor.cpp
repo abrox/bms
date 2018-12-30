@@ -41,12 +41,11 @@ void CurrentSensor::handleMsgIn(const event_t &msg)
   
 }
 
-bool CurrentSensor::setUp()
+void CurrentSensor::setUp()
 {
     monitor.begin();
     monitor.configure();
     monitor.calibrate();
-    return true;
 }
 void CurrentSensor::init()
 {
