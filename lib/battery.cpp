@@ -15,12 +15,12 @@ Battery::Battery()
 }
 
 
-void  Battery::setContext(const Context_t  &ctx)
+void  Battery::setContext(const BatteryCtx  &ctx)
 {
      _ctx = ctx;
 }
 
-void  Battery::getContext(Context_t  &ctx)
+void  Battery::getContext(BatteryCtx  &ctx)
 {
     ctx = _ctx;
 }
@@ -158,7 +158,7 @@ float Battery::getIRCChargeCurrent()
 {
     const Measurement_t &l = _lastMeasurement;
     const Config_t      &c = _cfg;
-    const Context_t     &x =_ctx;
+    const BatteryCtx     &x =_ctx;
 
     //R0 = rInternal [ 1 + A0 ( 1 − SOC ) ]
     //rInternal= internal resistance when SOC =100

@@ -34,7 +34,7 @@ struct Config_t{
 
 ///Dynamic system state.
 ///
-struct Context_t{
+struct BatteryCtx{
     state_t  state;
     uint32_t timeInState; ///< Time in current state in sec.
     uint32_t interval;    /// Measurement interval in sec.
@@ -43,7 +43,7 @@ struct Context_t{
     float cuLeft;       ///< Left over from previous round after full Asec removed.
     float rInternal; ///< Battery internal resistance mOhm, default is 5
 
-    Context_t():state(UNKNOWN),timeInState(0),interval(0),maxCapasity(0),
+    BatteryCtx():state(UNKNOWN),timeInState(0),interval(0),maxCapasity(0),
                 releasableCur(0),cuLeft(0.0),rInternal(0.005){}
 };
 
@@ -66,13 +66,13 @@ public:
     ///Set battery context.
     /// Restore battery state after sleep mode.
     ///
-    void setContext(const Context_t  &ctx);
+    void setContext(const BatteryCtx  &ctx);
 
     ///Get Battery context.
     /// Get battery state so that we can save it
     /// during deep sleep.
     ///
-    void getContext(Context_t  &ctx);
+    void getContext(BatteryCtx  &ctx);
 
     ///Update measurement data.
     ///\return 0 in case success.
@@ -141,7 +141,7 @@ private:
     //If IR is less than 5 milliohm, it is in very good condition.
 
     Config_t      _cfg;
-    Context_t     _ctx;
+    BatteryCtx     _ctx;
     Measurement_t _lastMeasurement; ///< Result of last measurement.
 
     static const float OCV_0;
