@@ -5,13 +5,6 @@ SandMan::SandMan(eQueue_t &eq):Runnable(eq),_flags(NO_FLAGS)
 {
 
 }
-void SandMan::executeAlways()
-{
-   if( timeToSleep() ){
-       //Sleep for 1 sec
-       ESP.deepSleep(1e6);
-   }
-}
 
 void SandMan::handleMsgIn(const event_t &msg)
 {
@@ -29,7 +22,11 @@ void SandMan::handleMsgIn(const event_t &msg)
     }else
      if(msg == MQTT_FAILED){
         clearFlags(MQTT_ON);
-     }
+    }
+
+    if( timeToSleep() ){
+        _appCtx->_sleepNow=true;
+    }
 
 }
 

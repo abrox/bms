@@ -52,13 +52,22 @@ void AppFrame::init()
 void AppFrame::run()
 {
   event_t event;
+  int i;
   while(_eq.getQ(event)){
-      for(int i=0;i < _rs;i++){
+      for(i=0;i < _rs;i++){
           _r[i]->handleMsgIn(event);
       }
   }
   
-  for(int i=0;i < _rs;i++){
+  for(i=0;i < _rs;i++){
       _r[i]->executeAlways();
+  }
+
+  if( _appCtx._sleepNow ){
+      for(i=0;i < _rs;i++){
+          _r[i]->tearDown();
+      }
+      //Sleep for 1 sec
+      ESP.deepSleep(1e6);
   }
 }

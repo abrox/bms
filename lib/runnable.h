@@ -12,6 +12,7 @@ public:
     virtual void handleMsgIn(const T &msg)=0;
     virtual void setUp()=0;
     virtual void init(){;}
+    virtual void tearDown(){;}
     virtual void executeAlways(){;}
     virtual void setUp( T2 *t){
         _appCtx = t;

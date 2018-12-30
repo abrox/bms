@@ -12,6 +12,7 @@ class BatteryMonitor: public runnable_t{
   void handleMsgIn(const event_t &msg);
 
   void setUp();
+  void tearDown();
   void executeAlways();
   private:
 

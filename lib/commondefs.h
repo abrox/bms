@@ -54,6 +54,7 @@ public:
 
     const char * _statusMsg{NULL};
     bType_t  _bootType{UNDEFINED};
+    bool     _sleepNow{false};
 private:
     eQueue_t &_eq;
 };

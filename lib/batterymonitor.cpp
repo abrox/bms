@@ -20,5 +20,9 @@ void BatteryMonitor::setUp()
 {
 ;
 }
+void BatteryMonitor::tearDown()
+{
+    ;
+}
 
 
