@@ -12,6 +12,7 @@
 #include "display.h"
 #include "mqttclient.h"
 #include "sandman.h"
+#include "batterymonitor.h"
 
 #include <runnable.h>
 
@@ -28,7 +29,7 @@ class AppFrame{
   private:
   
   bType_t getBootType();
-  static const uint16_t _rs=6;
+  static const uint16_t _rs=7;
   eQueue_t &_eq;
   runnable_t *_r[_rs];
   AppCtx _appCtx;

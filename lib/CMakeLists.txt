@@ -9,6 +9,7 @@ add_library(LibProject
             tempsensor.cpp
             configmanager.cpp
             sandman.cpp
+            batterymonitor.cpp
           )
 
 

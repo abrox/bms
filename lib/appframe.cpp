@@ -2,15 +2,16 @@
 #include "FS.h"
 
 
-Buttons       b(eQueue,BUTTON_PIN);
-TempSensor    t(eQueue,ONE_WIRE_BUS);
-CurrentSensor c(eQueue,INA219::I2C_ADDR_41);
-MqttClient    m(eQueue);
-Display       d(eQueue);
-SandMan       s(eQueue);
+Buttons        b(eQueue,BUTTON_PIN);
+TempSensor     t(eQueue,ONE_WIRE_BUS);
+CurrentSensor  c(eQueue,INA219::I2C_ADDR_41);
+BatteryMonitor bm(eQueue);
+MqttClient     m(eQueue);
+Display        d(eQueue);
+SandMan        s(eQueue);
 
 
-AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&m,&d,&s},_appCtx(eq)
+AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&bm,&m,&d,&s},_appCtx(eq)
 {
 
   ;
