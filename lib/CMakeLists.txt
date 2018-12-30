@@ -7,7 +7,7 @@ add_library(LibProject
             display.cpp  
             mqttclient.cpp  
             tempsensor.cpp
-            configfileprovider.cpp
+            configmanager.cpp
             sandman.cpp
           )
 
