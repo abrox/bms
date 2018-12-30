@@ -29,7 +29,7 @@ void Display::handleMsgIn(const event_t &msg)
      
     switch(_state){
     case DISPLAY_OFF:
-        if( msg == BUTTON_UP ){
+        if( msg == BUTTON_DOWN ){
             _state = DISPLAY_BATTERY;
         }else
          if( msg == BUTTON_DOWN_LONG ){

@@ -1,5 +1,5 @@
-#ifndef CONFIGFILEPROVIDER_H
-#define CONFIGFILEPROVIDER_H
+#ifndef CONFIGMANAGER_H
+#define CONFIGMANAGER_H
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -13,18 +13,18 @@ typedef struct {
         const char* _mqttServ{NULL};
 }MqttCfg;
 
-class ConfigFileProvider
+class ConfigManager
 {
     public:
-        static ConfigFileProvider& getInstance()
+        static ConfigManager& getInstance()
         {
-            static ConfigFileProvider    instance; // Guaranteed to be destroyed.
+            static ConfigManager    instance; // Guaranteed to be destroyed.
                                   // Instantiated on first use.
             return instance;
         }
 
     private:
-        ConfigFileProvider() {;}
+        ConfigManager() {;}
 
         typedef struct {
           uint32_t crc32;
@@ -40,8 +40,8 @@ class ConfigFileProvider
         bool getRTCMemStatus();
         bool setRTCMemStatus();
         bool getMqttCfg(MqttCfg& cfg);
-        ConfigFileProvider(ConfigFileProvider const&)  = delete;
-        void operator=(ConfigFileProvider const&)  = delete;
+        ConfigManager(ConfigManager const&)  = delete;
+        void operator=(ConfigManager const&)  = delete;
 
         // Note: Scott Meyers mentions in his Effective Modern
         //       C++ book, that deleted functions should generally

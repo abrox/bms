@@ -20,7 +20,6 @@ void setup(void) {
 
     Serial.begin(115200);
     Serial.println("Battery monitor starting...");
-   // ConfigFileProvider& c=ConfigFileProvider::getInstance();
     
     if( !SPIFFS.begin() ) {
         Serial.println("Failed to mount file system");

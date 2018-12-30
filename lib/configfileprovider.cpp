@@ -1,6 +1,6 @@
 
 #include "FS.h"
-#include "configfileprovider.h"
+#include "configmanager.h"
 
 #define NET_CONFIG_FILE PSTR("/config.json")
 
@@ -108,7 +108,7 @@ bool MqttClient::readConfigFromSerial()
 }
 #endif
 
-bool ConfigFileProvider::getMqttCfg(MqttCfg& cfg)
+bool ConfigManager::getMqttCfg(MqttCfg& cfg)
 {
 
     File configFile = SPIFFS.open(NET_CONFIG_FILE, "r");
@@ -155,7 +155,7 @@ bool ConfigFileProvider::getMqttCfg(MqttCfg& cfg)
   return true;
 }
 
-bool ConfigFileProvider::getRTCMemStatus()
+bool ConfigManager::getRTCMemStatus()
 {
     bool rc = false;
 
@@ -178,7 +178,7 @@ bool ConfigFileProvider::getRTCMemStatus()
     }
     return rc;
 }
-bool ConfigFileProvider::setRTCMemStatus()
+bool ConfigManager::setRTCMemStatus()
 {
     bool rc =false;
     DateTime now = rtc.now();
@@ -197,7 +197,7 @@ bool ConfigFileProvider::setRTCMemStatus()
 }
 
 
-bool ConfigFileProvider::configFilesExist()
+bool ConfigManager::configFilesExist()
 {
     bool rc= false;
     if( SPIFFS.exists(NET_CONFIG_FILE))

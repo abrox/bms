@@ -19,7 +19,7 @@ AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&m,&d,&s},_appCtx(eq)
 bType_t AppFrame::AppFrame::getBootType()
 {
   bType_t type;
-  ConfigFileProvider& c=ConfigFileProvider::getInstance();
+  ConfigManager& c=ConfigManager::getInstance();
 
   if( c.getRTCMemStatus() ){
       type = WARM_BOOT;

@@ -106,6 +106,6 @@ void MqttClient::init()
 
 bool MqttClient::readConfigFromFlash()
 {
-  ConfigFileProvider& c=ConfigFileProvider::getInstance();
+  ConfigManager& c=ConfigManager::getInstance();
   return(c.getMqttCfg(_cfg));
 }
