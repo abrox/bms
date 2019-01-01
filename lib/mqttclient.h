@@ -7,8 +7,7 @@
 #include <Ticker.h>
 
 #include "commondefs.h"
-#include "configmanager.h"
-
+#include "configdata.h"
 
 class MqttClient: public runnable_t{
   public:

@@ -33,7 +33,7 @@ SUITE(BatterySuite)
         const float eighty[5];
         const  float ninety[5];
         const float hundredForty[5];
-        Config_t config;
+        BatteryCfg config;
         Battery bat;
 
        BatteryFixture():
@@ -75,7 +75,7 @@ SUITE(BatterySuite)
          CHECK_CLOSE(0.42,bat._ctx.cuLeft,0.01);
          CHECK_EQUAL(1.0,(bat._ctx.maxCapasity-bat._ctx.releasableCur));
 
-         std::cout << "\nKoko:" << sizeof(BatteryCtx) << std::endl << sizeof(Config_t) << std::endl;
+         std::cout << "\nKoko:" << sizeof(BatteryCtx) << std::endl << sizeof(BatteryCfg) << std::endl;
 
     }
     TEST_FIXTURE(BatteryFixture,test_getIRCChargeCurrent)

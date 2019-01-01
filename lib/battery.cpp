@@ -25,7 +25,7 @@ void  Battery::getContext(BatteryCtx  &ctx)
     ctx = _ctx;
 }
 
-int16_t Battery::initilize(const Config_t &cfg)
+int16_t Battery::initilize(const BatteryCfg &cfg)
 {
     _cfg   = cfg;
 
@@ -147,7 +147,7 @@ int16_t Battery::getAddedProcent(const float &start,const float &end, const floa
 float Battery::getPCDischargeCurrent()
 {
     const Measurement_t &l = _lastMeasurement;
-    const Config_t      &c = _cfg;
+    const BatteryCfg      &c = _cfg;
     float cu = l.cu<0.0?-l.cu:l.cu;
     float val= pow(cu,c.peukert)/ pow((c.ratedCapasity/c.hourRate),(c.peukert-1));
 
@@ -157,7 +157,7 @@ float Battery::getPCDischargeCurrent()
 float Battery::getIRCChargeCurrent()
 {
     const Measurement_t &l = _lastMeasurement;
-    const Config_t      &c = _cfg;
+    const BatteryCfg      &c = _cfg;
     const BatteryCtx     &x =_ctx;
 
     //R0 = rInternal [ 1 + A0 ( 1 − SOC ) ]

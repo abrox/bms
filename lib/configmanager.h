@@ -3,15 +3,12 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include "commondefs.h"
 #include "RTClib.h"
 
-typedef struct {
-    const char* _ssid{NULL};
-    const char* _wifiPass{NULL};
-    const char* _mqttId{NULL};
-    const char* _mqttServ{NULL};
-}MqttCfg;
+#include "commondefs.h"
+#include "configdata.h"
+
+
 
 class ConfigManager
 {
@@ -26,20 +23,22 @@ public:
 private:
     ConfigManager() {;}
 
-    typedef struct {
-        uint32_t crc32;
-        uint32_t timestamp;
-    } rtcData_t;
 
-    rtcData_t _rtcData;
+    RtcData _rtcData;
     const size_t _confBuffSize = 3*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 130;
     DynamicJsonBuffer _jsonBuffer{_confBuffSize};
+
+    const size_t _batCtxOffset = sizeof(RtcData)/4;
 
 public:
     bool configFilesExist();
     bool getRTCMemStatus();
     bool setRTCMemStatus();
     bool getMqttCfg(MqttCfg& cfg);
+    bool getBatteryCfg(BatteryCfg& cfg);
+    bool getBatteryCtx(BatteryCtx& ctx);
+    bool saveBatCtxToRTCMem(BatteryCtx& ctx);
+
     ConfigManager(ConfigManager const&)  = delete;
     void operator=(ConfigManager const&)  = delete;
 

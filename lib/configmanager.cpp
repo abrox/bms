@@ -160,7 +160,7 @@ bool ConfigManager::getRTCMemStatus()
     bool rc = false;
 
     // Read struct from RTC memory
-    if( ESP.rtcUserMemoryRead(0, (uint32_t*)&_rtcData, sizeof(rtcData_t)) ) {
+    if( ESP.rtcUserMemoryRead(0, (uint32_t*)&_rtcData, sizeof(RtcData)) ) {
         uint32_t crcOfData = calculateCRC32((uint8_t*) &_rtcData.timestamp, sizeof(_rtcData.timestamp));
         DPRINT("CRC32 of data: ");
         DPRINTLN(crcOfData, HEX);
@@ -185,7 +185,7 @@ bool ConfigManager::setRTCMemStatus()
     _rtcData.timestamp = now.unixtime();
     _rtcData.crc32 = calculateCRC32((uint8_t*) &_rtcData.timestamp, sizeof(_rtcData.timestamp));
 
-    if( ESP.rtcUserMemoryWrite(0, (uint32_t*) &_rtcData, sizeof(rtcData_t)) ) {
+    if( ESP.rtcUserMemoryWrite(0, (uint32_t*) &_rtcData, sizeof(RtcData)) ) {
         DPRINT("CRC32: ");
         DPRINTLN(_rtcData.crc32, HEX);
         DPRINT("Date time: ");
@@ -202,6 +202,55 @@ bool ConfigManager::configFilesExist()
     bool rc= false;
     if( SPIFFS.exists(NET_CONFIG_FILE))
         rc=true;
+
+    return rc;
+}
+bool ConfigManager::getBatteryCfg(BatteryCfg& cfg)
+{
+    return false;
+}
+
+bool ConfigManager::getBatteryCtx(BatteryCtx& ctx)
+{
+    bool rc = false;
+    uint32_t crc;
+
+    if( ESP.rtcUserMemoryRead(_batCtxOffset, (uint32_t*)&crc, sizeof(uint32_t)) ) {
+       ;
+    }
+    if( ESP.rtcUserMemoryRead(_batCtxOffset+1, (uint32_t*)&ctx, sizeof(BatteryCtx)) ) {
+
+        uint32_t crcOfData = calculateCRC32((uint8_t*) &ctx, sizeof(BatteryCtx));
+
+        DPRINT("BatteryCtx CRC32: ");
+        DPRINTLN(crcOfData, HEX);
+
+        DPRINT(" From RTC CRC32: ");
+        DPRINTLN(crcOfData, HEX);
+
+        if( crcOfData == crc )
+            rc=true;
+        else
+            rc = false;
+   }
+
+    return rc;
+}
+
+bool ConfigManager::saveBatCtxToRTCMem(BatteryCtx& ctx)
+{
+    bool rc = false;
+    uint32_t crc = calculateCRC32((uint8_t*) &ctx, sizeof(BatteryCtx));
+
+    if( ESP.rtcUserMemoryWrite(_batCtxOffset, (uint32_t*) &crc, sizeof(uint32_t)) ) {
+        bool rc = true;
+        DPRINT("Save BatteryCtx... CRC");
+        DPRINTLN(crc, HEX);
+    }
+
+    if( ESP.rtcUserMemoryWrite(_batCtxOffset+1, (uint32_t*) &ctx, sizeof(BatteryCtx)) ) {
+        bool rc = true;
+    }
 
     return rc;
 }

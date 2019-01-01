@@ -1,51 +1,9 @@
 #ifndef BATTERY_H
 #define BATTERY_H
 #include <inttypes.h>
+#include "configdata.h"
 
 namespace bms {
-
-const int ONEHOUR=3600;
-
-enum class BattState{
-    UNKNOWN,
-    WAIT_TO_BE_IDLE,
-    IDLE,
-    CHARGE,
-    DISCHARGE
-};
-
-
-/// Battery configuration data.
-///
-struct Config_t{
-     uint32_t ocvWaitTime;      ///< Time to wait before meassure ocv 4h-24h default 8h ( sec )
-     uint8_t  interval;         ///< Meassurement interval in sec.
-     float    thresholdCurrent; ///< Minimun current to change from idle to charge / discharge.
-     uint8_t  ratedCapasity;    ///< Battery size, default is 120 Ah
-     uint8_t  hourRate;         ///< Battery at hour rate, default is 20.
-     float    peukert;          ///< Peukert's Exponent. default is 1.15
-
-
-     Config_t():ocvWaitTime(ONEHOUR*8),interval(1),thresholdCurrent(0.0001),
-                ratedCapasity(120),hourRate(20),peukert(1.15){;}
-
-};
-
-
-///Dynamic system state.
-///
-struct BatteryCtx{
-    BattState  state;
-    uint32_t timeInState; ///< Time in current state in sec.
-    uint32_t interval;    /// Measurement interval in sec.
-    uint32_t maxCapasity;
-    uint32_t releasableCur;
-    float cuLeft;       ///< Left over from previous round after full Asec removed.
-    float rInternal; ///< Battery internal resistance mOhm, default is 5
-
-    BatteryCtx():state(BattState::UNKNOWN),timeInState(0),interval(0),maxCapasity(0),
-                releasableCur(0),cuLeft(0.0),rInternal(0.005){}
-};
 
 
 class Battery
@@ -86,7 +44,7 @@ public:
     /// In case not setContext will update correct state
     /// if saved succesfully earlier.
     ///
-    int16_t initilize(const Config_t &cfg);
+    int16_t initilize(const BatteryCfg &cfg);
 
 private:
 
@@ -140,7 +98,7 @@ private:
     //If IR is between 5 to 10 milliohm, it is in good condition.
     //If IR is less than 5 milliohm, it is in very good condition.
 
-    Config_t      _cfg;
+    BatteryCfg     _cfg;
     BatteryCtx     _ctx;
     Measurement_t _lastMeasurement; ///< Result of last measurement.
 

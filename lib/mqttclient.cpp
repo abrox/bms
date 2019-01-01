@@ -1,7 +1,7 @@
 
 
 #include "mqttclient.h"
-
+#include "configmanager.h"
 
 void MqttClient::timerCallBack(){
     _eq.putQ(Msg::MQTT_CLIENT_TIMEOUT);

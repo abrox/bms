@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #include "commondefs.h"
-
+#include "battery.h"
 
 class BatteryMonitor: public runnable_t{
 public:
@@ -15,5 +15,7 @@ public:
     void tearDown();
     void executeAlways();
 private:
-
+    bms::Battery _bat;
+    BatteryCfg _cfg;
+    BatteryCtx _ctx;
 };

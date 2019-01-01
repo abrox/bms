@@ -1,6 +1,7 @@
 #include "appframe.h"
 #include "FS.h"
 
+#include "configmanager.h"
 
 Buttons        b(eQueue,BUTTON_PIN);
 TempSensor     t(eQueue,ONE_WIRE_BUS);
@@ -67,7 +68,7 @@ void AppFrame::run()
         for(i=0;i < _rs;i++){
             _r[i]->tearDown();
         }
-        //Sleep for 1 sec
-        ESP.deepSleep(1e6);
+        //Sleep
+        ESP.deepSleep(2e6);
     }
 }
