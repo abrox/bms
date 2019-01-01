@@ -12,24 +12,24 @@ class Display: public runnable_t{
   public:
   Display(eQueue_t &eq);
 
-  void handleMsgIn(const event_t &msg);
+  void handleMsgIn(const Msg &msg);
   void setUp();
  
   private:
-  enum state{
+  enum class State{
     DISPLAY_OFF,
     DISPLAY_BATTERY,
     DISPLAY_WIFI,
     DISPLAY_MENU
   };
   void timerCallBack();
-  void handleBatteryDisplay(const event_t &msg);
-  void handleWifiDisplay(const event_t &msg);
-  void handleMenuDisplay(const event_t &msg);
-  void show(const event_t &msg);
+  void handleBatteryDisplay(const Msg &msg);
+  void handleWifiDisplay(const Msg &msg);
+  void handleMenuDisplay(const Msg &msg);
+  void show(const Msg &msg);
  
   Ticker  _tick;
-  state   _state;
+  State   _state;
   U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
   
 };

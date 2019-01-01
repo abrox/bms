@@ -14,13 +14,13 @@ class MqttClient: public runnable_t{
   public:
   MqttClient(eQueue_t &eq);
 
-  void handleMsgIn(const event_t &msg);
+  void handleMsgIn(const Msg &msg);
   void executeAlways();
   void setUp();
   void init();
  
   private:
-  enum state{
+  enum class State{
     IDLE,
     WAIT_WIFI,
     WAIT_BROKER,
@@ -37,7 +37,7 @@ class MqttClient: public runnable_t{
     return _reTryCount > 0;
   }
   Ticker  _tick;
-  state   _state;
+  State   _state;
   WiFiClient _net;
   MQTTClient _client;
   const uint8_t _maxRetry = 20;

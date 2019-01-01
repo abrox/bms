@@ -19,21 +19,21 @@
 
 
 class AppFrame{
-  public:
-  AppFrame(eQueue_t &eq);
-           
-  void run();
-  void setUp();
-  void init();
+public:
+    AppFrame(eQueue_t &eq);
 
-  private:
-  
-  bType_t getBootType();
-  static const uint16_t _rs=7;
-  eQueue_t &_eq;
-  runnable_t *_r[_rs];
-  AppCtx _appCtx;
-  
+    void run();
+    void setUp();
+    void init();
+
+private:
+
+    BootType getBootType();
+    static const uint16_t _rs=7;
+    eQueue_t &_eq;
+    runnable_t *_r[_rs];
+    AppCtx _appCtx;
+
 };
 
 #endif

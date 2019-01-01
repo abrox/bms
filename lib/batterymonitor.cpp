@@ -10,7 +10,7 @@ void BatteryMonitor::executeAlways()
    ;
 }
 
-void BatteryMonitor::handleMsgIn(const event_t &msg)
+void BatteryMonitor::handleMsgIn(const Msg &msg)
 {
 
 

@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 #include <iomanip>
 #include "UnitTest++/UnitTest++.h"
 
@@ -6,6 +6,13 @@
 #include "battery.h"
 
 using namespace bms;
+
+///Strong type helper.
+/// Overcome problem that UnitTest++
+/// do not support enum Class
+/// \todo Remove when support availble.
+///
+#define CHECK_EQUAL_C11_STRONG(x,y) CHECK_EQUAL((int)x,(int)y)
 
 SUITE(BatterySuite)
 {
@@ -122,18 +129,18 @@ SUITE(BatterySuite)
         Battery::Measurement_t idleData(12.0,bat._cfg.thresholdCurrent,80);
 
         CHECK_EQUAL(0,bat.update(idleData));
-        CHECK_EQUAL(WAIT_TO_BE_IDLE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::WAIT_TO_BE_IDLE,bat._ctx.state);
 
         //Do one update and check that state stays in wait idle
         CHECK_EQUAL(0,bat._ctx.timeInState);
         CHECK_EQUAL(0,bat.update(idleData));
         CHECK_EQUAL(bat._ctx.interval,bat._ctx.timeInState);
-        CHECK_EQUAL(WAIT_TO_BE_IDLE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::WAIT_TO_BE_IDLE,bat._ctx.state);
 
         //Check that we move to IDLE after next update
         bat._ctx.timeInState = config.ocvWaitTime;
         CHECK_EQUAL(0,bat.update(idleData));
-        CHECK_EQUAL(IDLE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::IDLE,bat._ctx.state);
 
     }
 
@@ -144,16 +151,16 @@ SUITE(BatterySuite)
         Battery::Measurement_t idleData(12.0,bat._cfg.thresholdCurrent,80);
 
 
-        CHECK_EQUAL(UNKNOWN,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::UNKNOWN,bat._ctx.state);
 
         CHECK_EQUAL(0,bat.update( chargeData));
-        CHECK_EQUAL(CHARGE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::CHARGE,bat._ctx.state);
 
         CHECK_EQUAL(0,bat.update(dischargeData));
-        CHECK_EQUAL(DISCHARGE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::DISCHARGE,bat._ctx.state);
 
         CHECK_EQUAL(0,bat.update( idleData));
-        CHECK_EQUAL(WAIT_TO_BE_IDLE,bat._ctx.state);
+        CHECK_EQUAL_C11_STRONG(BattState::WAIT_TO_BE_IDLE,bat._ctx.state);
 
     }
 

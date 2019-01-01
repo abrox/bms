@@ -6,7 +6,7 @@ namespace bms {
 
 const int ONEHOUR=3600;
 
-enum state_t{
+enum class BattState{
     UNKNOWN,
     WAIT_TO_BE_IDLE,
     IDLE,
@@ -35,7 +35,7 @@ struct Config_t{
 ///Dynamic system state.
 ///
 struct BatteryCtx{
-    state_t  state;
+    BattState  state;
     uint32_t timeInState; ///< Time in current state in sec.
     uint32_t interval;    /// Measurement interval in sec.
     uint32_t maxCapasity;
@@ -43,7 +43,7 @@ struct BatteryCtx{
     float cuLeft;       ///< Left over from previous round after full Asec removed.
     float rInternal; ///< Battery internal resistance mOhm, default is 5
 
-    BatteryCtx():state(UNKNOWN),timeInState(0),interval(0),maxCapasity(0),
+    BatteryCtx():state(BattState::UNKNOWN),timeInState(0),interval(0),maxCapasity(0),
                 releasableCur(0),cuLeft(0.0),rInternal(0.005){}
 };
 
@@ -92,7 +92,7 @@ private:
 
     ///Update state machine state and time in state.
     ///
-    void changeStateTo(const state_t state);
+    void changeStateTo(const BattState state);
 
     ///Get temperature conmpensated State Of Charge(SOC).
     ///By Open Circuit Voltage (OCV )

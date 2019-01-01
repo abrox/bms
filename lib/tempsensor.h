@@ -9,27 +9,27 @@
 #include "commondefs.h"
 
 class TempSensor: public runnable_t{
-  public:
-  TempSensor(eQueue_t &eq,const uint8_t bus);
+public:
+    TempSensor(eQueue_t &eq,const uint8_t bus);
 
-  void handleMsgIn(const event_t &msg);
-  void setUp();
-  void init();
- 
-  private:
-  enum state{
-    IDLE,
-    WAIT_CONVERSION
-  };
-  void timerCallBack();
-  
-  OneWire oneWire;
-  DallasTemperature sensors;
-  Ticker _tick;
-  state  _state;
+    void handleMsgIn(const Msg &msg);
+    void setUp();
+    void init();
 
-  float temp;
-  
+private:
+    enum class State{
+        IDLE,
+        WAIT_CONVERSION
+    };
+    void timerCallBack();
+
+    OneWire oneWire;
+    DallasTemperature sensors;
+    Ticker _tick;
+    State  _state;
+
+    float temp;
+
 };
 
 

@@ -10,13 +10,13 @@ class Buttons: public runnable_t{
   public:
   Buttons(eQueue_t &eq,const uint8_t ioPin);
 
-  void handleMsgIn(const event_t &msg);
+  void handleMsgIn(const Msg &msg);
   void executeAlways();
   void setUp();
   void init();
  
   private:
-  enum state{
+  enum class State{
     BTN_UNKNOWN,
     BTN_IS_DOWN,
     BTN_IS_UP
@@ -25,7 +25,7 @@ class Buttons: public runnable_t{
   uint16_t checkBtn();
  
   Ticker  _tick;
-  state   _state;
+  State   _state;
   uint8_t _ioPin;
   uint16_t _btnPressedTime;
   volatile uint16_t _filter;

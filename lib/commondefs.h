@@ -13,33 +13,32 @@
   #define DPRINTLN(...)
 #endif
 
-typedef enum event_t{
-  DISPLAY_OFF_TIMEOUT,
-  UPDATE_STATUS_DISLAY,
-  BUTTON_DOWN,
-  BUTTON_DOWN_TWO_SEC,
-  BUTTON_DOWN_LONG,
-  BUTTON_DOWN_EXTLONG,
-  BUTTON_UP,
-  IDLE_TIMEOUT,
-  MEASSURE_TIMEOUT,
-  CURRENT_TIMEOUT,
-  START_MQTT,
-  MQTT_CLIENT_TIMEOUT,
-  MQTT_RUNNING,
-  MQTT_FAILED,
-  SOC_UPDATE,
-  CURRENT_REQ
-}event_t;
+enum class Msg{
+    DISPLAY_OFF_TIMEOUT,
+    UPDATE_STATUS_DISLAY,
+    BUTTON_DOWN,
+    BUTTON_DOWN_TWO_SEC,
+    BUTTON_DOWN_LONG,
+    BUTTON_DOWN_EXTLONG,
+    BUTTON_UP,
+    MEASSURE_TIMEOUT,
+    CURRENT_TIMEOUT,
+    START_MQTT,
+    MQTT_CLIENT_TIMEOUT,
+    MQTT_RUNNING,
+    MQTT_FAILED,
+    SOC_UPDATE,
+    CURRENT_REQ
+};
 
-typedef enum bType_t{
-  UNDEFINED,
-  FIRST_BOOT,
-  COLD_BOOT,
-  WARM_BOOT
-}bType_t;
+enum class BootType{
+    UNDEFINED,
+    FIRST_BOOT,
+    COLD_BOOT,
+    WARM_BOOT
+};
 
-typedef EventQueue<event_t> eQueue_t;
+typedef EventQueue<Msg> eQueue_t;
 
 class AppCtx{
 
@@ -49,19 +48,19 @@ public:
     void updateStatusDisplay( const char * statusMsg){
         _statusMsg = statusMsg;
          DPRINTLN(_statusMsg);
-        _eq.putQ(UPDATE_STATUS_DISLAY);
+        _eq.putQ(Msg::UPDATE_STATUS_DISLAY);
     }
 
     const char * _statusMsg{NULL};
-    bType_t  _bootType{UNDEFINED};
-    bool     _sleepNow{false};
+    BootType     _bootType{BootType::UNDEFINED};
+    bool         _sleepNow{false};
 private:
     eQueue_t &_eq;
 };
 
 
 
-typedef Runnable<event_t,AppCtx> runnable_t;
+typedef Runnable<Msg,AppCtx> runnable_t;
 
 // Data wire is plugged into port 2 on the Arduino
 #define ONE_WIRE_BUS 0

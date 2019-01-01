@@ -6,14 +6,14 @@
 
 
 class BatteryMonitor: public runnable_t{
-  public:
-  BatteryMonitor(eQueue_t &eq);
+public:
+    BatteryMonitor(eQueue_t &eq);
 
-  void handleMsgIn(const event_t &msg);
+    void handleMsgIn(const Msg &msg);
 
-  void setUp();
-  void tearDown();
-  void executeAlways();
-  private:
+    void setUp();
+    void tearDown();
+    void executeAlways();
+private:
 
 };

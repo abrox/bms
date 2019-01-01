@@ -38,17 +38,17 @@ int16_t Battery::initilize(const Config_t &cfg)
 }
 int16_t Battery::update(const Measurement_t &data)
 {
-    state_t state = IDLE;
+    BattState state = BattState::IDLE;
 
 
     if( data.cu > _cfg.thresholdCurrent ){
-       state = CHARGE;
+       state = BattState::CHARGE;
     }else
      if( _cfg.thresholdCurrent + data.cu < 0 ){
-        state = DISCHARGE;
+        state = BattState::DISCHARGE;
     }else
      if(_ctx.timeInState < _cfg.ocvWaitTime){
-        state = WAIT_TO_BE_IDLE;
+        state = BattState::WAIT_TO_BE_IDLE;
     }
 
    _lastMeasurement = data;
@@ -63,15 +63,15 @@ int16_t Battery::handleBatteryStates()
     float cu;
     int16_t cu2;
     switch (_ctx.state) {
-    case UNKNOWN:
+    case BattState::UNKNOWN:
         break;
-    case WAIT_TO_BE_IDLE:
+    case BattState::WAIT_TO_BE_IDLE:
         break;
-    case IDLE:
+    case BattState::IDLE:
         break;
-    case CHARGE:
-    case DISCHARGE:
-        if(_ctx.state == CHARGE)
+    case BattState::CHARGE:
+    case BattState::DISCHARGE:
+        if(_ctx.state == BattState::CHARGE)
             cu = getIRCChargeCurrent();
         else
             cu  = getPCDischargeCurrent();
@@ -90,7 +90,7 @@ int16_t Battery::handleBatteryStates()
     return rc;
 }
 
-void Battery::changeStateTo(const state_t state)
+void Battery::changeStateTo(const BattState state)
 {
     if( _ctx.state == state ){
         _ctx.timeInState += _ctx.interval;

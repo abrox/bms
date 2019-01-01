@@ -10,17 +10,17 @@
 
 
 class CurrentSensor: public runnable_t{
-  public:
-  CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr);
+public:
+    CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr);
 
-  void handleMsgIn(const event_t &msg);
-  void setUp();
-  void init();
+    void handleMsgIn(const Msg &msg);
+    void setUp();
+    void init();
 
-  private:
-  INA219 monitor;
+private:
+    INA219 monitor;
 
-  
+
 };
 
 

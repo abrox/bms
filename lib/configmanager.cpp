@@ -18,21 +18,21 @@
 ///Utility function to calculate CRC.
 ///
 uint32_t calculateCRC32(const uint8_t *data, size_t length) {
-  uint32_t crc = 0xffffffff;
-  while (length--) {
-    uint8_t c = *data++;
-    for (uint32_t i = 0x80; i > 0; i >>= 1) {
-      bool bit = crc & 0x80000000;
-      if (c & i) {
-        bit = !bit;
-      }
-      crc <<= 1;
-      if (bit) {
-        crc ^= 0x04c11db7;
-      }
+    uint32_t crc = 0xffffffff;
+    while (length--) {
+        uint8_t c = *data++;
+        for (uint32_t i = 0x80; i > 0; i >>= 1) {
+            bool bit = crc & 0x80000000;
+            if (c & i) {
+                bit = !bit;
+            }
+            crc <<= 1;
+            if (bit) {
+                crc ^= 0x04c11db7;
+            }
+        }
     }
-  }
-  return crc;
+    return crc;
 }
 
 void printDateTime(const DateTime& dt)
@@ -63,7 +63,7 @@ bool MqttClient::readConfigFromSerial()
     //todo: Some kind of shema& validator would be cool...
     //This is bit clumsy way
     if( !root.success() ){
-       msg = PSTR("failed to read from serial");
+        msg = PSTR("failed to read from serial");
     }else{
         ///////////WLAN///////////////////
         if( !root.containsKey(WLAN_STR) ){
@@ -73,38 +73,38 @@ bool MqttClient::readConfigFromSerial()
             if( !wlan.containsKey(WLAN_SSID_STR) ){
                 msg = WLAN_SSID_STR;
             }else
-            if( !wlan.containsKey(WLAN_PASS_STR) ){
-                 msg = WLAN_PASS_STR;
-            }else{
-                ///////////MQTT///////////////////
-                if( !root.containsKey(MQTT_STR) ){
-                    msg = MQTT_STR;
+                if( !wlan.containsKey(WLAN_PASS_STR) ){
+                    msg = WLAN_PASS_STR;
                 }else{
-                    JsonObject& mqtt = root[MQTT_STR];
-                    if( !mqtt.containsKey(MQTT_ID_STR) ){
-                       msg = MQTT_ID_STR;
-                    }else
-                    if( !mqtt.containsKey(MQTT_IP_STR) ){
-                        msg = MQTT_IP_STR;
+                    ///////////MQTT///////////////////
+                    if( !root.containsKey(MQTT_STR) ){
+                        msg = MQTT_STR;
                     }else{
-                       msg = PSTR("Config received");
-                       File configFile = SPIFFS.open(NET_CONFIG_FILE, "w");
-                       if( !configFile ) {
-                           msg = PSTR("Failed to open config file for writing");
-                       }else{
-                          root.printTo(configFile);
-                          msg = PSTR("Config received and saved");
-                          rc = true;
-                       }//Saved ok
-                    }// All required fields exist
-               }//root.containsKey(MQTT_STR)
-            }//all wlan fiels exist
+                        JsonObject& mqtt = root[MQTT_STR];
+                        if( !mqtt.containsKey(MQTT_ID_STR) ){
+                            msg = MQTT_ID_STR;
+                        }else
+                            if( !mqtt.containsKey(MQTT_IP_STR) ){
+                                msg = MQTT_IP_STR;
+                            }else{
+                                msg = PSTR("Config received");
+                                File configFile = SPIFFS.open(NET_CONFIG_FILE, "w");
+                                if( !configFile ) {
+                                    msg = PSTR("Failed to open config file for writing");
+                                }else{
+                                    root.printTo(configFile);
+                                    msg = PSTR("Config received and saved");
+                                    rc = true;
+                                }//Saved ok
+                            }// All required fields exist
+                    }//root.containsKey(MQTT_STR)
+                }//all wlan fiels exist
         }//root.containsKey(WLAN_STR)
     }//root ok
 
-  _appCtx->updateStatusDisplay(msg);
+    _appCtx->updateStatusDisplay(msg);
 
-  return rc;
+    return rc;
 }
 #endif
 
@@ -114,7 +114,7 @@ bool ConfigManager::getMqttCfg(MqttCfg& cfg)
     File configFile = SPIFFS.open(NET_CONFIG_FILE, "r");
     if( !configFile ){
         DPRINTLN(PSTR("Failed to open config file"));
-    return false;
+        return false;
     }
 
     size_t size = configFile.size();
@@ -123,36 +123,36 @@ bool ConfigManager::getMqttCfg(MqttCfg& cfg)
         return false;
     }
 
-     // Allocate a buffer to store contents of the file.
-     std::unique_ptr<char[]> buf(new char[size]);
+    // Allocate a buffer to store contents of the file.
+    std::unique_ptr<char[]> buf(new char[size]);
 
-     // We don't use String here because ArduinoJson library requires the input
-     // buffer to be mutable. If you don't use ArduinoJson, you may as well
-     // use configFile.readString instead.
-     configFile.readBytes(buf.get(), size);
+    // We don't use String here because ArduinoJson library requires the input
+    // buffer to be mutable. If you don't use ArduinoJson, you may as well
+    // use configFile.readString instead.
+    configFile.readBytes(buf.get(), size);
 
-     _jsonBuffer.clear();
-     JsonObject& root = _jsonBuffer.parseObject(buf.get());
+    _jsonBuffer.clear();
+    JsonObject& root = _jsonBuffer.parseObject(buf.get());
 
-     if( !root.success() ){
-         DPRINTLN(PSTR("Failed to parse config file"));
-         return false;
-     }
+    if( !root.success() ){
+        DPRINTLN(PSTR("Failed to parse config file"));
+        return false;
+    }
 
 #ifdef DEBUG
-     root.printTo(Serial);
+    root.printTo(Serial);
 #endif
 
-//Todo config version validity check
-//int rev_maj = root["rev"]["maj"]; // 1
-//int rev_min = root["rev"]["min"]; // 1
+    //Todo config version validity check
+    //int rev_maj = root["rev"]["maj"]; // 1
+    //int rev_min = root["rev"]["min"]; // 1
 
     cfg._ssid     = root["wlan"]["ssid"];
     cfg._wifiPass = root["wlan"]["pass"];
     cfg._mqttId   = root["mqtt"]["id"];
     cfg._mqttServ = root["mqtt"]["ip"];
 
-  return true;
+    return true;
 }
 
 bool ConfigManager::getRTCMemStatus()
@@ -168,12 +168,12 @@ bool ConfigManager::getRTCMemStatus()
         DPRINTLN(_rtcData.crc32, HEX);
 
         if( crcOfData != _rtcData.crc32 ) {
-          DPRINTLN("CRC32 in RTC memory doesn't match CRC32 of data. Data is probably invalid!");
+            DPRINTLN("CRC32 in RTC memory doesn't match CRC32 of data. Data is probably invalid!");
         } else {
-          DPRINTLN("CRC32 check ok, data is probably valid.");
-          DPRINT("Date time: ");
-          printDateTime(DateTime(_rtcData.timestamp));
-          rc = true;
+            DPRINTLN("CRC32 check ok, data is probably valid.");
+            DPRINT("Date time: ");
+            printDateTime(DateTime(_rtcData.timestamp));
+            rc = true;
         }
     }
     return rc;
@@ -191,7 +191,7 @@ bool ConfigManager::setRTCMemStatus()
         DPRINT("Date time: ");
         printDateTime(now);
         rc = true;
-      }
+    }
 
     return rc;
 }

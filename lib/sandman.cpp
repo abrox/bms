@@ -6,21 +6,21 @@ SandMan::SandMan(eQueue_t &eq):Runnable(eq),_flags(NO_FLAGS)
 
 }
 
-void SandMan::handleMsgIn(const event_t &msg)
+void SandMan::handleMsgIn(const Msg &msg)
 {
-    if( msg == BUTTON_DOWN ){
+    if( msg == Msg::BUTTON_DOWN ){
        setFlags(DISPLAY_ON);
     }else
-     if( msg == DISPLAY_OFF_TIMEOUT ){
+     if( msg == Msg::DISPLAY_OFF_TIMEOUT ){
          clearFlags(DISPLAY_ON);
     }else
-     if( msg == SOC_UPDATE ){
+     if( msg == Msg::SOC_UPDATE ){
          clearFlags(WAIT_CURRENT);
     }else
-     if(msg == START_MQTT){
+     if(msg == Msg::START_MQTT){
          setFlags(MQTT_ON);
     }else
-     if(msg == MQTT_FAILED){
+     if(msg == Msg::MQTT_FAILED){
         clearFlags(MQTT_ON);
     }
 

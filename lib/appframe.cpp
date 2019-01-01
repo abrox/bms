@@ -14,60 +14,60 @@ SandMan        s(eQueue);
 AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&bm,&m,&d,&s},_appCtx(eq)
 {
 
-  ;
+    ;
 }
 
-bType_t AppFrame::AppFrame::getBootType()
+BootType AppFrame::AppFrame::getBootType()
 {
-  bType_t type;
-  ConfigManager& c=ConfigManager::getInstance();
+    BootType type;
+    ConfigManager& c=ConfigManager::getInstance();
 
-  if( c.getRTCMemStatus() ){
-      type = WARM_BOOT;
-  }else
-   if( c.configFilesExist() ){
-       c.setRTCMemStatus();
-       type = COLD_BOOT;
-  }else{
-       type = FIRST_BOOT;
-  }
-  
-  return type;
+    if( c.getRTCMemStatus() ){
+        type = BootType::WARM_BOOT;
+    }else
+     if( c.configFilesExist() ){
+         c.setRTCMemStatus();
+         type = BootType::COLD_BOOT;
+    }else{
+         type = BootType::FIRST_BOOT;
+    }
+
+    return type;
 }
 
 void AppFrame::setUp()
 {
     _appCtx._bootType = getBootType();
-  
-   for(int i=0;i < _rs;i++)
-       _r[i]->setUp(&_appCtx);
+
+    for(int i=0;i < _rs;i++)
+        _r[i]->setUp(&_appCtx);
 }
 
 void AppFrame::init()
 {
-  for(int i=0;i < _rs;i++)
-      _r[i]->init();
+    for(int i=0;i < _rs;i++)
+        _r[i]->init();
 }
 
 void AppFrame::run()
 {
-  event_t event;
-  int i;
-  while(_eq.getQ(event)){
-      for(i=0;i < _rs;i++){
-          _r[i]->handleMsgIn(event);
-      }
-  }
-  
-  for(i=0;i < _rs;i++){
-      _r[i]->executeAlways();
-  }
+    Msg event;
+    int i;
+    while(_eq.getQ(event)){
+        for(i=0;i < _rs;i++){
+            _r[i]->handleMsgIn(event);
+        }
+    }
 
-  if( _appCtx._sleepNow ){
-      for(i=0;i < _rs;i++){
-          _r[i]->tearDown();
-      }
-      //Sleep for 1 sec
-      ESP.deepSleep(1e6);
-  }
+    for(i=0;i < _rs;i++){
+        _r[i]->executeAlways();
+    }
+
+    if( _appCtx._sleepNow ){
+        for(i=0;i < _rs;i++){
+            _r[i]->tearDown();
+        }
+        //Sleep for 1 sec
+        ESP.deepSleep(1e6);
+    }
 }
