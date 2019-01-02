@@ -1,3 +1,4 @@
+#ifndef BATTERYMONITOR_H
 #define BATTERYMONITOR_H
 
 #include <Arduino.h>
@@ -19,3 +20,4 @@ private:
     BatteryCfg _cfg;
     BatteryCtx _ctx;
 };
+#endif
