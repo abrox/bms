@@ -36,6 +36,10 @@ void CurrentSensor::handleMsgIn(const Msg &msg)
 
   Serial.println(" ");
   Serial.println(" ");
+
+  _appCtx->_currentData.volt = monitor.busVoltage();
+  _appCtx->_currentData.cu   = monitor.shuntCurrent();
+
   _eq.putQ(Msg::SOC_UPDATE);
    }
   

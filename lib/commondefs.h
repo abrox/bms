@@ -37,6 +37,8 @@ public:
     }
 
     const char * _statusMsg{nullptr};
+    CurrentData  _currentData;
+    int16_t      _soc;
     BootType     _bootType{BootType::UNDEFINED};
     bool         _sleepNow{false};
 private:
