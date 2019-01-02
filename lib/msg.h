@@ -19,4 +19,13 @@ enum class Msg{
     CURRENT_REQ
 };
 
+struct CurrentData{
+     float volt;    ///< meassured voltage.
+     float cu;      ///<  meassured currect in(+) or out(-).
+     int16_t temp;  ///<Battery temperature F in deg.
+     CurrentData(){}
+     CurrentData(const float &v,const float &c,int16_t const &t):
+         volt(v),cu(c),temp(t){}
+};
+
 #endif

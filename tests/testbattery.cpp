@@ -50,8 +50,8 @@ SUITE(BatterySuite)
     };
     TEST_FIXTURE(BatteryFixture,test_handleBatteryStates)
     {
-         Battery::CurrentData data(12.0,-0.24,80);
-         Battery::CurrentData data2(12.0,-7.2,80);
+         CurrentData data(12.0,-0.24,80);
+         CurrentData data2(12.0,-7.2,80);
 
          CHECK( bat._ctx.releasableCur == bat._ctx.maxCapasity);
          CHECK( bat._ctx.releasableCur == 120*ONEHOUR);
@@ -80,7 +80,7 @@ SUITE(BatterySuite)
     }
     TEST_FIXTURE(BatteryFixture,test_getIRCChargeCurrent)
     {
-        Battery::CurrentData data(12.0,2.0,80);
+        CurrentData data(12.0,2.0,80);
 
         CHECK( bat._ctx.releasableCur == bat._ctx.maxCapasity);
         CHECK( bat._ctx.rInternal == static_cast<float>(0.005));
@@ -102,7 +102,7 @@ SUITE(BatterySuite)
 
     TEST_FIXTURE(BatteryFixture,test_getPeukertCorrectedCurrent)
     {
-        Battery::CurrentData data(12.0,-0.24,80);
+        CurrentData data(12.0,-0.24,80);
 
         CHECK(bat._cfg.peukert == static_cast<float>(1.15));
         CHECK(bat._cfg.hourRate = 20);
@@ -125,8 +125,8 @@ SUITE(BatterySuite)
     TEST_FIXTURE(BatteryFixture,test_updateTimeInStateAndIdle)
     {
 
-        Battery::CurrentData chargeData(12.0,bat._cfg.thresholdCurrent+0.0001,80);
-        Battery::CurrentData idleData(12.0,bat._cfg.thresholdCurrent,80);
+        CurrentData chargeData(12.0,bat._cfg.thresholdCurrent+0.0001,80);
+        CurrentData idleData(12.0,bat._cfg.thresholdCurrent,80);
 
         CHECK_EQUAL(0,bat.update(idleData));
         CHECK_EQUAL_C11_STRONG(BattState::WAIT_TO_BE_IDLE,bat._ctx.state);
@@ -146,9 +146,9 @@ SUITE(BatterySuite)
 
     TEST_FIXTURE(BatteryFixture,test_updateBasicStateChanges)
     {
-        Battery::CurrentData chargeData(12.0,bat._cfg.thresholdCurrent+0.0001,80);
-        Battery::CurrentData dischargeData(12.0,0.0-(bat._cfg.thresholdCurrent+0.0001),80);
-        Battery::CurrentData idleData(12.0,bat._cfg.thresholdCurrent,80);
+        CurrentData chargeData(12.0,bat._cfg.thresholdCurrent+0.0001,80);
+        CurrentData dischargeData(12.0,0.0-(bat._cfg.thresholdCurrent+0.0001),80);
+        CurrentData idleData(12.0,bat._cfg.thresholdCurrent,80);
 
 
         CHECK_EQUAL_C11_STRONG(BattState::UNKNOWN,bat._ctx.state);

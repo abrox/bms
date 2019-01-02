@@ -2,6 +2,7 @@
 #define BATTERY_H
 #include <inttypes.h>
 #include "configdata.h"
+#include "msg.h"
 
 namespace bms {
 
@@ -10,14 +11,7 @@ class Battery
 {
 
 public:
-    struct CurrentData{
-         float volt;    ///< meassured voltage.
-         float cu;      ///<  meassured currect in(+) or out(-).
-         int16_t temp;  ///<Battery temperature F in deg.
-         CurrentData(){}
-         CurrentData(const float &v,const float &c,int16_t const &t):
-             volt(v),cu(c),temp(t){}
-    };
+
 
     Battery();
 
