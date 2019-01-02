@@ -40,33 +40,33 @@ void AppFrame::setUp()
 {
     _appCtx._bootType = getBootType();
 
-    for(int i=0;i < _rs;i++)
-        _r[i]->setUp(&_appCtx);
+    for(auto& r:_r)
+        r->setUp(&_appCtx);
 }
 
 void AppFrame::init()
 {
-    for(int i=0;i < _rs;i++)
-        _r[i]->init();
+    for(auto& r:_r)
+        r->init();
 }
 
 void AppFrame::run()
 {
     Msg event;
-    int i;
+
     while(_eq.getQ(event)){
-        for(i=0;i < _rs;i++){
-            _r[i]->handleMsgIn(event);
+        for(auto& r:_r){
+            r->handleMsgIn(event);
         }
     }
 
-    for(i=0;i < _rs;i++){
-        _r[i]->executeAlways();
+    for(auto& r:_r){
+        r->executeAlways();
     }
 
     if( _appCtx._sleepNow ){
-        for(i=0;i < _rs;i++){
-            _r[i]->tearDown();
+        for(auto& r:_r){
+            r->tearDown();
         }
         //Sleep
         ESP.deepSleep(2e6);
