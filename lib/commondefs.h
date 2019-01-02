@@ -51,7 +51,7 @@ public:
         _eq.putQ(Msg::UPDATE_STATUS_DISLAY);
     }
 
-    const char * _statusMsg{NULL};
+    const char * _statusMsg{nullptr};
     BootType     _bootType{BootType::UNDEFINED};
     bool         _sleepNow{false};
 private:
