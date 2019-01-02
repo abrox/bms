@@ -10,12 +10,12 @@ class Battery
 {
 
 public:
-    struct Measurement_t{
+    struct CurrentData{
          float volt;    ///< meassured voltage.
          float cu;      ///<  meassured currect in(+) or out(-).
          int16_t temp;  ///<Battery temperature F in deg.
-         Measurement_t(){}
-         Measurement_t(const float &v,const float &c,int16_t const &t):
+         CurrentData(){}
+         CurrentData(const float &v,const float &c,int16_t const &t):
              volt(v),cu(c),temp(t){}
     };
 
@@ -35,7 +35,7 @@ public:
     ///Update measurement data.
     ///\return 0 in case success.
     ///
-    int16_t update(const Measurement_t &data);
+    int16_t update(const CurrentData &data);
 
     int16_t getSOC(){return 0;}
 
@@ -100,7 +100,7 @@ private:
 
     BatteryCfg     _cfg;
     BatteryCtx     _ctx;
-    Measurement_t _lastMeasurement; ///< Result of last measurement.
+    CurrentData _lastMeasurement; ///< Result of last measurement.
 
     static const float OCV_0;
     static const float OCV_25;
