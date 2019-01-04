@@ -25,4 +25,9 @@ Before take it in use. JSOn format is used.
 			"ip": "1111.222.333.444"
 		}
 	}
+	
+## Menu Logic
 
+![ ](https://drive.google.com/open?id=1AAKjRC1VDKmk8c-1X5tJ7PXIJz_LbG-z
+  "Display logic")
+  
