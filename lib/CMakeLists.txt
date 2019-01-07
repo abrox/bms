@@ -4,7 +4,8 @@ add_library(LibProject
             battery.cpp  
             buttons.cpp  
             currentsensor.cpp  
-            display.cpp  
+            display.cpp
+            ui.cpp
             mqttclient.cpp  
             tempsensor.cpp
             configmanager.cpp
