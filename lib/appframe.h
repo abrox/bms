@@ -28,7 +28,7 @@ public:
 
 private:
 
-    BootType getBootType();
+    void initAppCtx(AppCtx& _appCtx);
     static const uint16_t _rs=7;
     eQueue_t &_eq;
     runnable_t *_r[_rs];

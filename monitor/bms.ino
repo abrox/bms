@@ -33,6 +33,11 @@ void setup(void) {
         Serial.println("RTC is NOT running!");
        // following line sets the RTC to the date & time this sketch was compiled
        rtc.adjust(DateTime(__DATE__, __TIME__));
+    }else 
+    if(rtc.now().year()> 2050 ){
+       Serial.println("RTC have odd time ?!");
+       // following line sets the RTC to the date & time this sketch was compiled
+       rtc.adjust(DateTime(__DATE__, __TIME__));
     }
      
     app.setUp(); 

@@ -17,18 +17,23 @@ class Buttons: public runnable_t{
  
   private:
   enum class State{
-    BTN_UNKNOWN,
+    BTN_INIT,
     BTN_IS_DOWN,
     BTN_IS_UP
   };
   void timerCallBack();
-  uint16_t checkBtn();
+  void checkBtn();
  
   Ticker  _tick;
-  State   _state;
+  State   _st;
   uint8_t _ioPin;
   uint16_t _btnPressedTime;
-  volatile uint16_t _filter;
+  volatile uint16_t _settleTime;
+  int   _ioState{0};
+
+#ifdef DEBUG
+    const char* _stName{nullptr};
+#endif
 
   
 };

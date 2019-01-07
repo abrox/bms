@@ -54,4 +54,9 @@ void CurrentSensor::setUp()
 void CurrentSensor::init()
 {
     _eq.putQ(Msg::CURRENT_REQ);
+    _tick.attach(1, std::bind(&CurrentSensor::timerCallBack, this));
+}
+void CurrentSensor::timerCallBack()
+{
+   _eq.putQ(Msg::CURRENT_REQ);
 }

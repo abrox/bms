@@ -5,6 +5,7 @@ enum class Msg{
     DISPLAY_OFF_TIMEOUT,
     UPDATE_STATUS_DISLAY,
     BUTTON_DOWN,
+    BUTTON_SHORT_PRESS,
     BUTTON_DOWN_TWO_SEC,
     BUTTON_DOWN_LONG,
     BUTTON_DOWN_EXTLONG,
@@ -16,7 +17,8 @@ enum class Msg{
     MQTT_RUNNING,
     MQTT_FAILED,
     SOC_UPDATE,
-    CURRENT_REQ
+    CURRENT_REQ,
+    MENU_RETURN_TIMEOUT
 };
 
 struct CurrentData{
@@ -26,6 +28,11 @@ struct CurrentData{
      CurrentData(){}
      CurrentData(const float &v,const float &c,int16_t const &t):
          volt(v),cu(c),temp(t){}
+};
+
+struct BatteryStats{
+    uint8_t soc{0};
+    uint8_t soh{0};
 };
 
 #endif

@@ -14,7 +14,7 @@ void Buttons::timerCallBack(){
             _eq.putQ(Msg::BUTTON_DOWN_EXTLONG);
 }
 
-Buttons::Buttons(eQueue_t &eq,const uint8_t ioPin):Runnable(eq),_state(State::BTN_UNKNOWN),_ioPin(ioPin),_btnPressedTime(0),_filter(0)
+Buttons::Buttons(eQueue_t &eq,const uint8_t ioPin):Runnable(eq),_st(State::BTN_INIT),_ioPin(ioPin),_btnPressedTime(0),_settleTime(0)
 {
     ;
 }
@@ -33,44 +33,56 @@ void Buttons::setUp()
 
 void Buttons::executeAlways()
 {
-    if( _filter )
-        _filter--;
-    else
-        _filter = checkBtn();
+    int val = digitalRead(_ioPin);
+    if( val == _ioState ){
+        if( _settleTime )
+            _settleTime--;
+    }else{
+        _settleTime=10;
+        _ioState = val;
+    }
+
+    if( !_settleTime){
+        checkBtn();
+    }
     
 }
 
-uint16_t Buttons::checkBtn()
+void Buttons::checkBtn()
 {
-    uint16_t filterVal=0;
-    switch(_state){
+    switch(_st){
+    case State::BTN_INIT:
+        if( _ioState == HIGH ){
+            CHANGE_STATE(State::BTN_IS_UP);
+        }
+        break;
     case State::BTN_IS_DOWN:
-        if( digitalRead(_ioPin) ){
+        //Release button...
+        if( _ioState == HIGH ){
             _eq.putQ(Msg::BUTTON_UP);
+            if( _btnPressedTime<2 )
+                _eq.putQ(Msg::BUTTON_SHORT_PRESS);
             _tick.detach();
-            filterVal = 20;
-            _state = State::BTN_IS_UP;
+            CHANGE_STATE(State::BTN_IS_UP);
         }
         break;
     case State::BTN_IS_UP:
-        if( !digitalRead(_ioPin) ){
+        //Pressing button...
+        if( _ioState == LOW ){
             _eq.putQ(Msg::BUTTON_DOWN);
             _tick.attach(1.0, std::bind(&Buttons::timerCallBack, this));
             _btnPressedTime = 0;
-            filterVal = 20;
-            _state = State::BTN_IS_DOWN;
+            CHANGE_STATE(State::BTN_IS_DOWN);
         }
         break;
     }
-    return filterVal;
 }
 
 void Buttons::init()
 {
-    if( !digitalRead(_ioPin)){
-        _state = State::BTN_IS_DOWN;
+    _ioState = digitalRead(_ioPin);
+    if( _ioState == LOW ){
+        //Info sandman to keep system wake.
         _eq.putQ(Msg::BUTTON_DOWN);
-        _tick.attach(1.0, std::bind(&Buttons::timerCallBack, this));
-    }else
-        _state = State::BTN_IS_UP;
+    }
 }

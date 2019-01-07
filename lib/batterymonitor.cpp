@@ -14,7 +14,7 @@ void BatteryMonitor::handleMsgIn(const Msg &msg)
 {
     if( msg == Msg::SOC_UPDATE ){
         _bat.update(_appCtx->_currentData);
-        _appCtx->_soc = _bat.getSOC();
+        _bat.getBatteryStats(_appCtx->_batteryStats);
     }
 }
 

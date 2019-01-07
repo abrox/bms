@@ -31,6 +31,8 @@ public:
     ///
     int16_t update(const CurrentData &data);
 
+    void getBatteryStats(BatteryStats& stats);
+
     int16_t getSOC(){return 0;}
 
     /// Intilize battery data.

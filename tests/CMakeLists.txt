@@ -7,6 +7,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib)
 add_executable (tests 
                 main.cpp 
                 testbattery.cpp
+                testui.cpp
                 ${PROJECT_SOURCE_DIR}/lib/battery.cpp
                )
 target_link_libraries (tests UnitTest++)

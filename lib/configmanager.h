@@ -38,6 +38,7 @@ public:
     bool getBatteryCfg(BatteryCfg& cfg);
     bool getBatteryCtx(BatteryCtx& ctx);
     bool saveBatCtxToRTCMem(BatteryCtx& ctx);
+    uint32_t getStartTime(){return _rtcData.timestamp;}
 
     ConfigManager(ConfigManager const&)  = delete;
     void operator=(ConfigManager const&)  = delete;

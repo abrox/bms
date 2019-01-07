@@ -173,6 +173,8 @@ bool ConfigManager::getRTCMemStatus()
             DPRINTLN("CRC32 check ok, data is probably valid.");
             DPRINT("Date time: ");
             printDateTime(DateTime(_rtcData.timestamp));
+            DPRINT("Now: ");
+            printDateTime(rtc.now());
             rc = true;
         }
     }

@@ -6,7 +6,7 @@
 
 #include "msg.h"
 
-#define DEBUG  
+//#define DEBUG
 #ifdef DEBUG  
   #define DPRINT(...)    Serial.print(__VA_ARGS__) 
   #define DPRINTLN(...)  Serial.println(__VA_ARGS__) 
@@ -14,6 +14,18 @@
   #define DPRINT(...) 
   #define DPRINTLN(...)
 #endif
+
+
+#ifdef DEBUG
+  #define SET_NAME(s) _stName = PSTR(#s)
+#else
+   #define SET_NAME(s)
+#endif
+
+#define CHANGE_STATE(s) \
+       SET_NAME(s);\
+       DPRINTLN(_stName);\
+       _st     = s;
 
 
 enum class BootType{
@@ -38,10 +50,10 @@ public:
 
     const char * _statusMsg{nullptr};
     CurrentData  _currentData;
-    int16_t      _soc;
+    BatteryStats _batteryStats;
     BootType     _bootType{BootType::UNDEFINED};
     bool         _sleepNow{false};
-private:
+    uint32_t     _startTime{0};///<time since last BootType::COLD_BOOT
     eQueue_t &_eq;
 };
 

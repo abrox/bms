@@ -14,6 +14,10 @@ Battery::Battery()
 
 }
 
+void Battery::getBatteryStats(BatteryStats& stats)
+{
+
+}
 
 void  Battery::setContext(const BatteryCtx  &ctx)
 {

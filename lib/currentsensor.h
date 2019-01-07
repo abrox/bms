@@ -2,6 +2,7 @@
 #define CURRENTSENSOR_H
 
 #include <Arduino.h>
+#include <Ticker.h>
 
 #include "commondefs.h"
 
@@ -18,7 +19,11 @@ public:
     void init();
 
 private:
-    INA219 monitor;
+    void timerCallBack();
+
+    INA219 monitor;    
+    Ticker  _tick;
+
 
 
 };

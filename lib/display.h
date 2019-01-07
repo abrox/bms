@@ -7,30 +7,35 @@
 #include <SPI.h>
 
 #include "commondefs.h"
+#include "ui.h"
+
+typedef U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI U8g2;
+
+class MyDisplay:public U8g2,public DisplayIf{
+public:
+   MyDisplay():U8g2(U8G2_R0, OLED_CLK, OLED_MOSI, OLED_CS,OLED_DC, OLED_RESET){;}
+   void menuSelection(const char* title,const Menu& m,const uint8_t select=0);
+   void YesNoQuestion(const char* title,const char* q,const boolean yes);
+   virtual void showStats(const BatteryStats& st,const TimeElapsed& delta );
+   virtual void showSOC(const CurrentData& cd,const uint8_t soc);
+   virtual void show(const char* title, const char* str);
+
+ private:
+   uint16_t drawTitle(const char* title);
+
+};
 
 class Display: public runnable_t{
   public:
-  Display(eQueue_t &eq);
+  Display(eQueue_t &eq):Runnable(eq){;}
 
   void handleMsgIn(const Msg &msg);
   void setUp();
  
   private:
-  enum class State{
-    DISPLAY_OFF,
-    DISPLAY_BATTERY,
-    DISPLAY_WIFI,
-    DISPLAY_MENU
-  };
-  void timerCallBack();
-  void handleBatteryDisplay(const Msg &msg);
-  void handleWifiDisplay(const Msg &msg);
-  void handleMenuDisplay(const Msg &msg);
-  void show(const Msg &msg);
- 
-  Ticker  _tick;
-  State   _state;
-  U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
+
+  MenuCtrl * _ui{nullptr};
+  MyDisplay u8g2;
   
 };
 

@@ -18,7 +18,7 @@ AppFrame::AppFrame(eQueue_t &eq): _eq(eq),_r{ &b,&t,&c,&bm,&m,&d,&s},_appCtx(eq)
     ;
 }
 
-BootType AppFrame::AppFrame::getBootType()
+void AppFrame::AppFrame::initAppCtx(AppCtx& _appCtx)
 {
     BootType type;
     ConfigManager& c=ConfigManager::getInstance();
@@ -33,12 +33,13 @@ BootType AppFrame::AppFrame::getBootType()
          type = BootType::FIRST_BOOT;
     }
 
-    return type;
+    _appCtx._startTime = c.getStartTime();
+    _appCtx._bootType  = type;
 }
 
 void AppFrame::setUp()
 {
-    _appCtx._bootType = getBootType();
+    initAppCtx(_appCtx);
 
     for(auto& r:_r)
         r->setUp(&_appCtx);
