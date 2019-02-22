@@ -1,29 +1,52 @@
+/*
+MIT License
+
+Copyright (c) 2019 Jukka-Pekka Sarjanen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 #include "currentsensor.h"
 
 //Debug printout
-void printCurrent(INA219& monitor){
+void printCurrent(INA219& sensor){
     DPRINT("raw shunt voltage: ");
-    DPRINTLN(monitor.shuntVoltageRaw());
+    DPRINTLN(sensor.shuntVoltageRaw());
 
     DPRINT("raw bus voltage:   ");
-    DPRINTLN(monitor.busVoltageRaw());
+    DPRINTLN(sensor.busVoltageRaw());
 
     DPRINTLN("--");
 
     DPRINT("shunt voltage: ");
-    DPRINT(monitor.shuntVoltage() * 1000, 4);
+    DPRINT(sensor.shuntVoltage() * 1000, 4);
     DPRINTLN(" mV");
 
     DPRINT("shunt current: ");
-    DPRINT(monitor.shuntCurrent() * 1000, 4);
+    DPRINT(sensor.shuntCurrent() * 1000, 4);
     DPRINTLN(" mA");
 
     DPRINT("bus voltage:   ");
-    DPRINT(monitor.busVoltage(), 4);
+    DPRINT(sensor.busVoltage(), 4);
     DPRINTLN(" V");
 
     DPRINT("bus power:     ");
-    DPRINT(monitor.busPower() * 1000, 4);
+    DPRINT(sensor.busPower() * 1000, 4);
     DPRINTLN(" mW");
 
     DPRINTLN(" ");
@@ -31,20 +54,19 @@ void printCurrent(INA219& monitor){
 
 }
 
-CurrentSensor::CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr):Runnable(eq),monitor(addr)
+CurrentSensor::CurrentSensor(eQueue_t &eq,const INA219::t_i2caddr &addr):Runnable(eq),_sensor(addr)
 {
 
 }
 
 void CurrentSensor::handleMsgIn(const Msg &msg)
 {
-    if( msg == Msg::CURRENT_TIMEOUT ||
-        msg == Msg::CURRENT_REQ ){
+    if( msg == Msg::CURRENT_REQ ){
 
-        _appCtx->_currentData.volt = monitor.busVoltage();
-        _appCtx->_currentData.cu   = monitor.shuntCurrent();
+        _appCtx->_currentData.volt = _sensor.busVoltage();
+        _appCtx->_currentData.cu   = _sensor.shuntCurrent();
 
-        printCurrent(monitor);
+        printCurrent(_sensor);
         _eq.putQ(Msg::SOC_UPDATE);
    }
   
@@ -52,9 +74,9 @@ void CurrentSensor::handleMsgIn(const Msg &msg)
 
 void CurrentSensor::setUp()
 {
-    monitor.begin();
-    monitor.configure();
-    monitor.calibrate();
+    _sensor.begin();
+    _sensor.configure();
+    _sensor.calibrate();
 }
 void CurrentSensor::init()
 {
