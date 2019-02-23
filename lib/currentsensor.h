@@ -27,6 +27,7 @@ SOFTWARE.
 #include <Ticker.h>
 
 #include "commondefs.h"
+#include "configdata.h"
 
 #include "ina219.h"
 
@@ -56,8 +57,9 @@ public:
 private:
     void timerCallBack();
 
-    INA219 _sensor;
-    Ticker _tick;
+    INA219     _sensor;
+    Ticker     _tick;
+    CurrentCfg _cfg;
 
 };
 #endif

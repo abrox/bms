@@ -38,6 +38,13 @@ public:
     bool getBatteryCfg(BatteryCfg& cfg);
     bool getBatteryCtx(BatteryCtx& ctx);
     bool saveBatCtxToRTCMem(BatteryCtx& ctx);
+
+    ///Read current sensor and shunt configuration.
+    /// \return True when success False if configuration not exist.
+    ///
+    bool getCurrentSensorCfg(CurrentCfg& cfg ///< [OUT] Updated cofiguration.
+                             );
+
     uint32_t getStartTime(){return _rtcData.timestamp;}
 
     ConfigManager(ConfigManager const&)  = delete;

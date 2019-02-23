@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include "currentsensor.h"
+#include "configmanager.h"
 
 //Debug printout
 void printCurrent(INA219& sensor){
@@ -74,9 +75,16 @@ void CurrentSensor::handleMsgIn(const Msg &msg)
 
 void CurrentSensor::setUp()
 {
+    ConfigManager& c=ConfigManager::getInstance();
+    c.getCurrentSensorCfg(_cfg);
+
     _sensor.begin();
     _sensor.configure();
-    _sensor.calibrate();
+    _sensor.calibrate(_cfg._shuntResistance,
+                      _cfg._maxShuntVoltage,
+                      _cfg._maxBusVoltage,
+                      _cfg._maxCurrent
+                      );
 }
 void CurrentSensor::init()
 {

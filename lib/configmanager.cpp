@@ -256,3 +256,10 @@ bool ConfigManager::saveBatCtxToRTCMem(BatteryCtx& ctx)
 
     return rc;
 }
+
+bool ConfigManager::getCurrentSensorCfg(CurrentCfg& cfg){
+    //First phase configuration defaults are ok.
+    //they are reflects my own system.
+    //Thus just return OK without reading anything.
+    return true;
+}

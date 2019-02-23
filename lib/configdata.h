@@ -2,6 +2,16 @@
 #define CONFIGDATA_H
 
 
+///Current sensor and shunt configuration.
+///Defaults reflect my setup.
+///
+struct CurrentCfg{
+    float _shuntResistance{0.0015}; ///< Value of shunt in Ohms(75mV/50A).
+    float _maxShuntVoltage{0.075};  ///< Maximum value of voltage across shunt .
+    float _maxBusVoltage{15.0};     ///< Maximum voltage of bus aka. battery chargin voltage.
+    float _maxCurrent{20.0};        ///< Maximum charge/ discharge current.
+};
+
 struct MqttCfg{
     const char* _ssid{nullptr};
     const char* _wifiPass{nullptr};
